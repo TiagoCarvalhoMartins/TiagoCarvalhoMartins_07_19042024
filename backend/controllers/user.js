@@ -28,7 +28,7 @@ exports.login= (req, res, next) => {
                     res.status(401).json({message: 'Combinaison identifiant/mot de passe incorrecte'})
                 } else {
                     res.status(200).json({
-                        userID: user._id,
+                        userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
                             'VIEUX_GRIMOIRES',

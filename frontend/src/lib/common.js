@@ -10,6 +10,27 @@ function formatBooks(bookArray) {
   });
 }
 
+function getTokenFromLocalStorage() {
+  return localStorage.getItem('token');
+}
+
+// Fonction modifié pour acquérir l'ID
+export async function fetchData() {
+  try {
+    const token = getTokenFromLocalStorage();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get(API_ROUTES.data, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);
   localStorage.setItem('userId', userId);
