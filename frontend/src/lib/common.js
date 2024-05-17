@@ -30,6 +30,7 @@ export async function fetchData() {
     throw error;
   }
 }
+// Fin de fonction modifié
 
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);
