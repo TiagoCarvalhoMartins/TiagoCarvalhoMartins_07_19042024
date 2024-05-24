@@ -1,5 +1,4 @@
 const Book = require('../models/Book');
-const multer = require('multer');
 
 // Créé un livre
 exports.createBook = (req, res, next) => {
@@ -71,3 +70,45 @@ exports.getBooksByBestRating = (req, res, next) => {
         res.status(500).json({ error: error.message });
       });
   };
+
+  // Met à jour un livre existant
+exports.updateBook = (req, res, next) => {
+  const bookId = req.params.id;
+  const { title, author, year, genre, grade } = req.body;
+
+  // Vérifier si une image a été téléchargée
+  if (req.file) {
+      const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+      Book.findByIdAndUpdate(bookId, { title, author, imageUrl, year, genre, grade }, { new: true })
+          .then(updatedBook => {
+              res.status(200).json({ message: 'Book updated successfully!', book: updatedBook });
+          })
+          .catch(error => {
+              res.status(400).json({ error: error.message });
+          });
+  } else {
+      Book.findByIdAndUpdate(bookId, { title, author, year, genre, grade }, { new: true })
+          .then(updatedBook => {
+              res.status(200).json({ message: 'Book updated successfully!', book: updatedBook });
+          })
+          .catch(error => {
+              res.status(400).json({ error: error.message });
+          });
+  }
+};
+
+// Supprimer un livre par son ID
+exports.deleteBookById = (req, res, next) => {
+  const bookId = req.params.id;
+
+  Book.findByIdAndDelete(bookId)
+      .then(deletedBook => {
+          if (!deletedBook) {
+              return res.status(404).json({ message: 'Book not found' });
+          }
+          res.status(200).json({ message: 'Book deleted successfully!', deletedBook });
+      })
+      .catch(error => {
+          res.status(500).json({ error: error.message });
+      });
+};

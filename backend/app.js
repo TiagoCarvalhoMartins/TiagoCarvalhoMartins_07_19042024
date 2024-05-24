@@ -1,5 +1,6 @@
 const express = require ('express');
-const multer = require('multer');
+const path = require('path');
+//const multer = require('multer');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
@@ -12,6 +13,9 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+app.use('/images', express.static('images'));
+
 
 
 mongoose.connect('mongodb+srv://carvalhomartinstiago:6TEOPTS4atbGLLO6@cluster0.7rk4nid.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
@@ -30,20 +34,7 @@ mongoose.connect('mongodb+srv://carvalhomartinstiago:6TEOPTS4atbGLLO6@cluster0.7
   next();
 });
 
-// Configuration de Multer pour gérer le téléchargement de fichiers
-//const storage = multer.diskStorage({
-//  destination: (req, file, cb) => {
-//    cb(null, 'images'); // Répertoire où les fichiers seront enregistrés
-//  },
-//  filename: (req, file, cb) => {
-//   cb(null, Date.now() + '-' + file.originalname); // Nom du fichier enregistré
-//  }
-//});
-
-//const upload = multer({ storage: storage });
-
 app.use('/api/auth', userRoutes);
-//app.post('/api/books', upload.single('image'), bookController.createBook);
 app.use('/api/books', bookRoutes);
 
 module.exports = app;
