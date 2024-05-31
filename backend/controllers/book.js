@@ -11,7 +11,7 @@ exports.createBook = (req, res, next) => {
     let totalGrade = 0;
     let numberOfRatings = 0;
     for (const rating of ratings) {
-        if (rating.grade !== undefined) {
+        if (rating.grace !== undefined) {
             totalGrade += rating.grade;
             numberOfRatings++;
         }
