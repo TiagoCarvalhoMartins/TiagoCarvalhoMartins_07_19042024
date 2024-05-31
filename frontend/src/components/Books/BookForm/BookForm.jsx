@@ -12,7 +12,7 @@ import { updateBook, addBook } from '../../../lib/common';
 function BookForm({ book, validate }) {
   const userRating = book ? book.ratings.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade : 0;
 
-  const [grade, setRating] = useState(0);
+  const [rating, setRating] = useState(0);
 
   const navigate = useNavigate();
   const {
@@ -36,10 +36,10 @@ function BookForm({ book, validate }) {
   }, [userRating]);
 
   useEffect(() => {
-    if (!book && formState.dirtyFields.grade) {
-      const rate = document.querySelector('input[name="grade"]:checked').value;
+    if (!book && formState.dirtyFields.rating) {
+      const rate = document.querySelector('input[name="rating"]:checked').value;
       setRating(parseInt(rate, 10));
-      formState.dirtyFields.grade = false;
+      formState.dirtyFields.rating = false;
     }
   }, [formState]);
 
@@ -49,9 +49,9 @@ function BookForm({ book, validate }) {
       if (!data.file[0]) {
         alert('Vous devez ajouter une image');
       }
-      if (!data.grade) {
+      if (!data.rating) {
         /* eslint-disable no-param-reassign */
-        data.grade = 0;
+        data.rating = 0;
         /* eslint-enable no-param-reassign */
       }
       const newBook = await addBook(data);
@@ -93,7 +93,7 @@ function BookForm({ book, validate }) {
       <label htmlFor="rate">
         <p>Note</p>
         <div className={styles.Stars}>
-          {generateStarsInputs(grade, register, readOnlyStars)}
+          {generateStarsInputs(rating, register, readOnlyStars)}
         </div>
       </label>
       <label htmlFor="file">

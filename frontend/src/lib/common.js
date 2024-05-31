@@ -10,8 +10,9 @@ function formatBooks(bookArray) {
   });
 }
 
-function getTokenFromLocalStorage() {
-  return localStorage.getItem('token');
+export function storeInLocalStorage(token, userId) {
+  localStorage.setItem('token', token);
+  localStorage.setItem('userId', userId);
 }
 
 // Fonction modifié pour acquérir l'ID
@@ -31,11 +32,6 @@ export async function fetchData() {
   }
 }
 // Fin de fonction modifié
-
-export function storeInLocalStorage(token, userId) {
-  localStorage.setItem('token', token);
-  localStorage.setItem('userId', userId);
-}
 
 export function getFromLocalStorage(item) {
   return localStorage.getItem(item);
