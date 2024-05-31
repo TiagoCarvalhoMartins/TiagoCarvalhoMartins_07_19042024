@@ -16,6 +16,10 @@ export function storeInLocalStorage(token, userId) {
 }
 
 // Fonction modifié pour acquérir l'ID
+export function getTokenFromLocalStorage() {
+  return localStorage.getItem('token');
+}
+
 export async function fetchData() {
   try {
     const token = getTokenFromLocalStorage();
@@ -32,7 +36,6 @@ export async function fetchData() {
   }
 }
 // Fin de fonction modifié
-
 export function getFromLocalStorage(item) {
   return localStorage.getItem(item);
 }
