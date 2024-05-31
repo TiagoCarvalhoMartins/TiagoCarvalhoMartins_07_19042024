@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth')
+const checkUserId = require('../middleware/checkUserId');
 const { upload, resizeImage } = require('../middleware/sharp-config');
 const bookController = require ('../controllers/book')
 
@@ -18,12 +19,12 @@ router.get('/bestrating', bookController.getBooksByBestRating);
 router.get('/:id', bookController.getBookById);
 
 // Route pour mettre à jour un livre par son ID
-router.put('/:id', auth, upload, resizeImage, bookController.updateBook);
+router.put('/:id', auth, checkUserId, upload, resizeImage, bookController.updateBook);
 
 // Route pour supprimer un livre par son ID
-router.delete('/:id', auth, bookController.deleteBookById);
+router.delete('/:id', auth, checkUserId, bookController.deleteBookById);
 
 // Route pour ajouter un rating à un livre
-router.post('/:id/rating', auth, bookController.addRating);
+router.post('/:id/rating', auth, checkUserId, bookController.addRating);
 
 module.exports = router;

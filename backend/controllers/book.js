@@ -11,7 +11,7 @@ exports.createBook = (req, res, next) => {
     let totalGrade = 0;
     let numberOfRatings = 0;
     for (const rating of ratings) {
-        if (rating.grade !== undefined) {
+        if (rating.grace !== undefined) {
             totalGrade += rating.grade;
             numberOfRatings++;
         }
@@ -134,7 +134,6 @@ exports.addRating = async (req, res, next) => {
       return res.status(400).json({ message: 'Invalid grade value' });
     }
 
-    // Recherchez le livre par son ID
     const book = await Book.findById(bookId);
 
     if (!book) {
@@ -142,20 +141,19 @@ exports.addRating = async (req, res, next) => {
     }
 
     // Vérifiez si l'utilisateur a déjà noté ce livre
-    const existingRating = book.ratings.find(rating => rating.userId.toString() === userId);
+    const existingRating = book.ratings.find(grade => grade.userId.toString() === userId);
 
     if (existingRating) {
       return res.status(400).json({ message: 'User has already rated this book' });
     }
 
-    // Ajoutez la nouvelle note
+
     book.ratings.push({ userId, grade });
 
-    // Recalculez la note moyenne
     const sum = book.ratings.reduce((acc, curr) => acc + curr.grade, 0);
     book.averageRating = sum / book.ratings.length;
 
-    // Sauvegardez le livre avec la nouvelle note
+
     await book.save();
 
     res.status(200).json({ message: 'Rating added successfully', book });
