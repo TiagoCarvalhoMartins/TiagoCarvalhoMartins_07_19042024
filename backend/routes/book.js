@@ -12,11 +12,11 @@ router.post('/', auth, upload, resizeImage, bookController.createBook);
 // Route pour obtenir tous les livres
 router.get('/', bookController.getAllBooks);
 
-// Route pour obtenir un livre par son ID
-router.get('/:id', bookController.getBookById);
-
 // Route pour obtenir les 3 livres avec la meilleure note moyenne
 router.get('/bestrating', bookController.getBooksByBestRating);
+
+// Route pour obtenir un livre par son ID
+router.get('/:id', bookController.getBookById);
 
 // Route pour mettre à jour un livre par son ID
 router.put('/:id', auth, checkUserId, upload, resizeImage, bookController.updateBook);
@@ -24,10 +24,7 @@ router.put('/:id', auth, checkUserId, upload, resizeImage, bookController.update
 // Route pour supprimer un livre par son ID
 router.delete('/:id', auth, checkUserId, bookController.deleteBookById);
 
-<<<<<<< HEAD
 // Route pour ajouter un rating à un livre
 router.post('/:id/rating', auth, checkUserId, bookController.addRating);
 
-=======
->>>>>>> parent of de92fa7 (corretion adding book)
 module.exports = router;

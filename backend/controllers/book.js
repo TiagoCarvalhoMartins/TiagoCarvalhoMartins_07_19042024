@@ -2,56 +2,56 @@ const Book = require('../models/Book');
 
 // Créé un livre
 exports.createBook = (req, res, next) => {
-   
+  try {
     const bookData = JSON.parse(req.body.book);
     const{ userId, title, author, year, genre, ratings } = bookData;
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    
     const defaultGrade = 0;
-<<<<<<< HEAD
     let totalGrade = 0;
     let numberOfRatings = 0;
     for (const rating of ratings) {
         if (rating.grace !== undefined) {
             totalGrade += rating.grade;
             numberOfRatings++;
-=======
-    const grade = ratings.length > 0 && ratings[0].grade !== undefined ? ratings[0].grade : defaultGrade;
-    
-    const book = new Book({
-    userId: userId,
-    title: title,
-    author: author,
-    imageUrl: imageUrl,
-    year: year,
-    genre: genre,
-    ratings: [{ userId: userId, grade: grade }]
-  });
-  book.save().then(
-      () => {
-          res.status(201).json({
-              message: 'Book saved successfully!'
-            });
->>>>>>> parent of de92fa7 (corretion adding book)
         }
-    ).catch(
-        (error) => {
-        console.log(error)
-      res.status(400).json({
-        error: error
-      });
     }
-  );
+
+  const grade = numberOfRatings > 0 ? totalGrade / numberOfRatings : defaultGrade;
+      
+      const book = new Book({
+      userId: userId,
+      title: title,
+      author: author,
+      imageUrl: imageUrl,
+      year: year,
+      genre: genre,
+      ratings: [{ userId: userId, grade: grade }]
+    });
+    book.save()
+      .then(() => {
+        console.log('Book saved successfully');
+        res.status(201).json({ message: 'Book saved successfully!' });
+    })
+    .catch(error => {
+      console.error('Error saving book:', error);
+      res.status(400).json({ error });
+    });
+  } catch (error) {
+    console.error('Error in createBook function:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
-// Récupérer tous les livres
-exports.getAllBooks = (req, res, next) => {
-    Book.find()
-      .then(books => {
-        res.status(200).json(books);
-      })
-      .catch(error => {
-        res.status(500).json({ error: error.message });
-      });
+  // Récupérer tous les livres
+  exports.getAllBooks = (req, res, next) => {
+      Book.find()
+        .then(books => {
+          res.status(200).json(books);
+        })
+        .catch(error => {
+          res.status(500).json({ error: error.message });
+        });
   };
 
   // Récupérer un livre par son ID
@@ -120,7 +120,6 @@ exports.deleteBookById = (req, res, next) => {
       .catch(error => {
           res.status(500).json({ error: error.message });
       });
-<<<<<<< HEAD
 };
 
 
@@ -162,6 +161,4 @@ exports.addRating = async (req, res, next) => {
     console.error('Error adding rating:', error);
     res.status(500).json({ error: 'Server error' });
   }
-=======
->>>>>>> parent of de92fa7 (corretion adding book)
 };

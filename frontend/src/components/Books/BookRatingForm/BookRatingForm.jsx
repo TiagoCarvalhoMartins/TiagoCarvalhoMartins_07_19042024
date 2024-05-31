@@ -9,28 +9,28 @@ import { useUser } from '../../../lib/customHooks';
 import { rateBook } from '../../../lib/common';
 
 function BookRatingForm({
-  grade, setRating, userId, setBook, id, userRated,
+  rating, setRating, userId, setBook, id, userRated,
 }) {
   const { connectedUser, auth } = useUser();
   const navigate = useNavigate();
   const { register, formState, handleSubmit } = useForm({
     mode: 'onChange',
     defaultValues: {
-      grade: 0,
+      rating: 0,
     },
   });
   useEffect(() => {
-    if (formState.dirtyFields.grade) {
-      const rate = document.querySelector('input[name="grade"]:checked').value;
+    if (formState.dirtyFields.rating) {
+      const rate = document.querySelector('input[name="rating"]:checked').value;
       setRating(parseInt(rate, 10));
-      formState.dirtyFields.grade = false;
+      formState.dirtyFields.rating = false;
     }
   }, [formState]);
   const onSubmit = async () => {
     if (!connectedUser || !auth) {
       navigate(APP_ROUTES.SIGN_IN);
     }
-    const update = await rateBook(id, userId, grade);
+    const update = await rateBook(id, userId, rating);
     console.log(update);
     if (update) {
       // eslint-disable-next-line no-underscore-dangle
@@ -42,9 +42,9 @@ function BookRatingForm({
   return (
     <div className={styles.BookRatingForm}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p>{grade > 0 ? 'Votre Note' : 'Notez cet ouvrage'}</p>
+        <p>{rating > 0 ? 'Votre Note' : 'Notez cet ouvrage'}</p>
         <div className={styles.Stars}>
-          {!userRated ? generateStarsInputs(grade, register) : displayStars(grade)}
+          {!userRated ? generateStarsInputs(rating, register) : displayStars(rating)}
         </div>
         {!userRated ? <button type="submit">Valider</button> : null}
       </form>
@@ -53,7 +53,7 @@ function BookRatingForm({
 }
 
 BookRatingForm.propTypes = {
-  grade: PropTypes.number.isRequired,
+  rating: PropTypes.number.isRequired,
   setRating: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   setBook: PropTypes.func.isRequired,
