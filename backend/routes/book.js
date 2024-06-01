@@ -6,7 +6,6 @@ const { upload, resizeImage } = require('../middleware/sharp-config');
 const bookController = require ('../controllers/book')
 
 // Route pour créer un nouveau livre
-//router.post('/', auth, multer, bookController.createBook);
 router.post('/', auth, upload, resizeImage, bookController.createBook);
 
 // Route pour obtenir tous les livres
@@ -22,7 +21,7 @@ router.get('/:id', bookController.getBookById);
 router.put('/:id', auth, checkUserId, upload, resizeImage, bookController.updateBook);
 
 // Route pour supprimer un livre par son ID
-router.delete('/:id', auth, checkUserId, bookController.deleteBookById);
+router.delete('/:id', auth, bookController.deleteBookById);
 
 // Route pour ajouter un rating à un livre
 router.post('/:id/rating', auth, checkUserId, bookController.addRating);
