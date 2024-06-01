@@ -127,11 +127,11 @@ exports.deleteBookById = (req, res, next) => {
 exports.addRating = async (req, res, next) => {
   try {
     const bookId = req.params.id;
-    const { userId, grade } = req.body;
+    const { userId, rating } = req.body;
 
     // Vérifiez que grade est un nombre valide
-    if (typeof grade !== 'number' || grade < 0 || grade > 5) {
-      return res.status(400).json({ message: 'Invalid grade value' });
+    if (typeof rating !== 'number' || rating < 0 || rating > 5) {
+      return res.status(400).json({ message: 'Invalid rating value' });
     }
 
     const book = await Book.findById(bookId);
@@ -148,7 +148,7 @@ exports.addRating = async (req, res, next) => {
     }
 
 
-    book.ratings.push({ userId, grade });
+    book.ratings.push({ userId, grade: rating });
 
     const sum = book.ratings.reduce((acc, curr) => acc + curr.grade, 0);
     book.averageRating = sum / book.ratings.length;
@@ -156,7 +156,7 @@ exports.addRating = async (req, res, next) => {
 
     await book.save();
 
-    res.status(200).json({ message: 'Rating added successfully', book });
+    res.status(200).json({ message: 'Rating added successfully', userId, rating, book, id: bookId, _id: bookId  });
   } catch (error) {
     console.error('Error adding rating:', error);
     res.status(500).json({ error: 'Server error' });
